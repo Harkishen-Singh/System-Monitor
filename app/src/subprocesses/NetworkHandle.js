@@ -26,7 +26,6 @@ class NetworkHandle {
                     else
                         b_filtered.push(b[x].trim());
             }
-            console.log(b_filtered[0]);
             if (!(b_filtered[0] == "%%%removethis%%%")) {
                 processObjects.push({
                     "Proto": b_filtered[0],
@@ -78,12 +77,13 @@ class NetworkHandle {
         var i, values;
         var ll = [];
         var processObjects = [];
-        var child = shelljs_1.exec('nethogs -t', { silent: true, async: true }).stdout.toString().split("\n");
-        child.forEach(ll => {
+        var child = shelljs_1.exec('nethogs -t', { silent: true, async: true });
+        var x = child.stdout;
+        x.on('data', function (data) {
+            ll = data.split("\n");
             if (ll[1] == "Refreshing:") {
                 for (i = 2; i < ll.length - 1; i++) {
                     values = ll[i].split("\t");
-                    // console.log(d)
                     processObjects.push({
                         "Program": values[0],
                         "Sent": values[1],
@@ -91,24 +91,7 @@ class NetworkHandle {
                     });
                 }
             }
-            console.log(processObjects);
         });
-        // child.stdout.on('data', function(data:any) {
-        //     ll = data.split("\n");
-        //     if(ll[1] == "Refreshing:"){
-        //         for(i=2;i<ll.length - 1; i++){
-        //             values = ll[i].split("\t");
-        //             // console.log(d)
-        //             processObjects.push({
-        //                 "Program": values[0],
-        //                 "Sent":values[1],
-        //                 "Recieved":values[2]
-        //             })
-        //         }
-        //     }
-        // });
     }
 }
 exports.NetworkHandle = NetworkHandle;
-var a = new NetworkHandle();
-a.networkActivityMonitoring();
