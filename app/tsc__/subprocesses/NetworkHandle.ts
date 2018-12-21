@@ -2,31 +2,31 @@ import { exec } from 'shelljs';
 import { shell } from "electron";
 
 export class NetworkHandle {
-    private networkCardsList: string[];
-    private networkStatsList: string[];
+    private networkCardsList: object[];
+    private networkStatsList: object[];
     private networkSpeed:number;
     private networkSpeedListCollection: object[];
     private separator: string;
 
     constructor() {
+    
         this.networkCardsList = [];
         this.separator = "%%%";
-        this.networkCardsList = [];
         this.networkStatsList = [];
         this.networkSpeed = 0;
         this.networkSpeedListCollection = [];
+        
     }
 
-    public netstatPID(pid: string = "1"){
-        var netstats = exec("netstat -tanp | grep" + pid , { silent: true }).stdout.toString().split("\n");
-        
+    public netstatPID(pid : number) {
+        var netstats = exec("netstat -tanp | grep "+ String(pid), { silent: true }).stdout.toString().split("\n");
         var processObjects = [];
-        for (var j=0; j< netstats.length-1; j++){ // first two being the headings
+        for (var j = 0 ; j < netstats.length-1; j++){ // first two being the headings
             var b = netstats[j].split(" ");
             var b_filtered:string[] = [];
             var count = 0;
-            for (var x=0;x< b.length; x++) {
-                if (!(b[x].trim()=="") && x!=(b.length-1))
+            for (var x = 0 ; x < b.length ; x++) {
+                if (!(b[x].trim()=="") && x != (b.length-1))
                     b_filtered.push(b[x].trim());
                 else if (x==(b.length-1))
                     if (!b[x].startsWith("1"))
@@ -44,11 +44,11 @@ export class NetworkHandle {
                     "State" : b_filtered[5],
                     "PID/Program name": b_filtered[6]
                 });
-              
+            }
         }
+        this.networkCardsList = processObjects;
+        return this.networkCardsList;
     }
-    return processObjects;
-}
 
     public netstatALL(){
         var proc = exec("netstat -tanp", { silent: true }).stdout.toString().split("\n");
@@ -82,27 +82,60 @@ export class NetworkHandle {
                 "PID/Program name": b_filtered[6]
             });
         }
-        return processObjects;
+        this.networkStatsList = processObjects;
+        return this.networkStatsList;
     }
 
     public networkActivityMonitoring() {
-        var i,values;
+        var i : number,
+            a : number,
+            b : number = 0,
+            len : number;
+        var values : string[] = [];
         var ll : string[] = [];
         var processObjects: any[] = [];
         var child = exec('nethogs -t',{silent:true, async:true});
         var x : any = child.stdout;
+        var self = this;
         x.on('data', function(data:any) {
             ll = data.split("\n");
             if(ll[1] == "Refreshing:"){
                 for(i=2;i<ll.length - 1; i++){
                     values = ll[i].split("\t");
-                    processObjects.push({
-                        "Program": values[0],
-                        "Sent":values[1],
-                        "Recieved":values[2]
-                    })
+                    len = processObjects.length
+                    if(len == 0 ){
+                        processObjects.push({
+                            "Program": values[0],
+                            "Sent":values[1],
+                            "Recieved":values[2]
+                        })
+                    }
+                    for(a = 0; a < len ; a++ ){
+                        if(values[0] == processObjects[a].Program){
+                            processObjects[a].Sent = values[1];
+                            processObjects[a].Recieved = values[2];
+                            if(a == len-1)
+                                b = a + 1;
+                            else
+                                b = a;
+                            break;
+                        }
+                    }
+                    if(b == len-1){
+                        processObjects.push({
+                            "Program": values[0],
+                            "Sent":values[1],
+                            "Recieved":values[2]
+                        })
+                    }
                 }
-            }
+            }  
+            self.networkSpeedListCollection = processObjects;
+            console.log(self.networkSpeedListCollection)
         });
+        // return this.networkSpeedListCollection;
     }
 }
+
+var a = new NetworkHandle();
+a.networkActivityMonitoring();

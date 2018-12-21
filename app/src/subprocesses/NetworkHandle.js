@@ -5,13 +5,12 @@ class NetworkHandle {
     constructor() {
         this.networkCardsList = [];
         this.separator = "%%%";
-        this.networkCardsList = [];
         this.networkStatsList = [];
         this.networkSpeed = 0;
         this.networkSpeedListCollection = [];
     }
-    netstatPID(pid = "1") {
-        var netstats = shelljs_1.exec("netstat -tanp | grep" + pid, { silent: true }).stdout.toString().split("\n");
+    netstatPID(pid) {
+        var netstats = shelljs_1.exec("netstat -tanp | grep " + String(pid), { silent: true }).stdout.toString().split("\n");
         var processObjects = [];
         for (var j = 0; j < netstats.length - 1; j++) { // first two being the headings
             var b = netstats[j].split(" ");
@@ -38,7 +37,8 @@ class NetworkHandle {
                 });
             }
         }
-        return processObjects;
+        this.networkCardsList = processObjects;
+        return this.networkCardsList;
     }
     netstatALL() {
         var proc = shelljs_1.exec("netstat -tanp", { silent: true }).stdout.toString().split("\n");
@@ -71,27 +71,56 @@ class NetworkHandle {
                 "PID/Program name": b_filtered[6]
             });
         }
-        return processObjects;
+        this.networkStatsList = processObjects;
+        return this.networkStatsList;
     }
     networkActivityMonitoring() {
-        var i, values;
+        var i, a, b = 0, len;
+        var values = [];
         var ll = [];
         var processObjects = [];
         var child = shelljs_1.exec('nethogs -t', { silent: true, async: true });
         var x = child.stdout;
+        var self = this;
         x.on('data', function (data) {
             ll = data.split("\n");
             if (ll[1] == "Refreshing:") {
                 for (i = 2; i < ll.length - 1; i++) {
                     values = ll[i].split("\t");
-                    processObjects.push({
-                        "Program": values[0],
-                        "Sent": values[1],
-                        "Recieved": values[2]
-                    });
+                    len = processObjects.length;
+                    if (len == 0) {
+                        processObjects.push({
+                            "Program": values[0],
+                            "Sent": values[1],
+                            "Recieved": values[2]
+                        });
+                    }
+                    for (a = 0; a < len; a++) {
+                        if (values[0] == processObjects[a].Program) {
+                            processObjects[a].Sent = values[1];
+                            processObjects[a].Recieved = values[2];
+                            if (a == len - 1)
+                                b = a + 1;
+                            else
+                                b = a;
+                            break;
+                        }
+                    }
+                    if (b == len - 1) {
+                        processObjects.push({
+                            "Program": values[0],
+                            "Sent": values[1],
+                            "Recieved": values[2]
+                        });
+                    }
                 }
             }
+            self.networkSpeedListCollection = processObjects;
+            console.log(self.networkSpeedListCollection);
         });
+        // return this.networkSpeedListCollection;
     }
 }
 exports.NetworkHandle = NetworkHandle;
+var a = new NetworkHandle();
+a.networkActivityMonitoring();
