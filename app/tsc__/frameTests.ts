@@ -1,4 +1,5 @@
 import { ProcessesHandle } from './subprocesses/ProcessHandle';
+import {NetworkHandle} from './subprocesses/NetworkHandle';
 export function runTests() {
     var obj: ProcessesHandle = new ProcessesHandle();
     var x = obj.getRunningProcesses();
@@ -7,5 +8,13 @@ export function runTests() {
         console.warn(res);
     });
 }
+// runTests();
 
-runTests();
+export function netwotkTest(){
+    var objNet : NetworkHandle = new NetworkHandle();
+    console.log(objNet.netstatALL());
+    console.log(objNet.netstatPID(1));
+    console.log(objNet.networkActivityMonitoring());
+}
+
+netwotkTest();
