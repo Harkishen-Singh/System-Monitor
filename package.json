@@ -2,10 +2,12 @@
   "name": "system-monitor",
   "version": "1.0.0",
   "description": "monitor application to monitor system processes",
-  "main": "main.js",
+  "main": "./app/src/main.js",
   "scripts": {
     "test": "node ./app/src/frameTests.js",
-    "start": "electron ./app/src/main.js"
+    "start": "electron ./app/src/main.js",
+    "build": "electron-packager . System-monitor",
+    "package": "asar pack System-monitor-linux-x64/resources/app System-monitor-linux-x64/resources/app.asar"
   },
   "repository": {
     "type": "git",
@@ -25,9 +27,11 @@
   "devDependencies": {
     "asar": "^0.14.6",
     "electron": "^4.0.0",
+    "electron-packager": "^13.0.1",
     "node-json-db": "^0.9.2",
     "ps-node": "^0.1.6",
     "shelljs": "^0.8.3",
     "tasklist": "^3.1.1"
-  }
+  },
+  "dependencies": {}
 }
