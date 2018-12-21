@@ -1,0 +1,33 @@
+{
+  "name": "system-monitor",
+  "version": "1.0.0",
+  "description": "monitor application to monitor system processes",
+  "main": "main.js",
+  "scripts": {
+    "test": "test",
+    "start": "electron ./app/src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harkishen-Singh/System-Monitor.git"
+  },
+  "keywords": [
+    "system",
+    "processes",
+    "monitor"
+  ],
+  "author": "H & M",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Harkishen-Singh/System-Monitor/issues"
+  },
+  "homepage": "https://github.com/Harkishen-Singh/System-Monitor#readme",
+  "devDependencies": {
+    "asar": "^0.14.6",
+    "electron": "^4.0.0",
+    "node-json-db": "^0.9.2",
+    "ps-node": "^0.1.6",
+    "shelljs": "^0.8.3",
+    "tasklist": "^3.1.1"
+  }
+}
