@@ -17,8 +17,8 @@ export class NetworkHandle {
         this.networkSpeedListCollection = [];
     }
 
-    public netstatPID(pid: string){
-        var netstats = exec("netstat -tanp | grep 1" , { silent: true }).stdout.toString().split("\n");
+    public netstatPID(pid: string = "1"){
+        var netstats = exec("netstat -tanp | grep" + pid , { silent: true }).stdout.toString().split("\n");
         
         var processObjects = [];
         for (var j=0; j< netstats.length-1; j++){ // first two being the headings
@@ -29,7 +29,7 @@ export class NetworkHandle {
                 if (!(b[x].trim()=="") && x!=(b.length-1))
                     b_filtered.push(b[x].trim());
                 else if (x==(b.length-1))
-                    if (!b[x].startsWith(1))
+                    if (!b[x].startsWith("1"))
                         b_filtered.push("%%%removethis%%%");
                     else
                         b_filtered.push(b[x].trim());
@@ -91,9 +91,8 @@ export class NetworkHandle {
         var i,values;
         var ll : string[] = [];
         var processObjects: any[] = [];
-        var child = exec('nethogs -t',{silent:true, async:true});
-        child.stdout.on('data', function(data: string) {
-            ll = data.split("\n");
+        var child = exec('nethogs -t',{silent:true, async:true}).stdout.toString().split("\n");
+        child.forEach(ll=>{
             if(ll[1] == "Refreshing:"){
                 for(i=2;i<ll.length - 1; i++){
                     values = ll[i].split("\t");
@@ -105,6 +104,25 @@ export class NetworkHandle {
                     })
                 }
             }
-        });
+            console.log(processObjects)
+        })
+        // child.stdout.on('data', function(data:any) {
+        //     ll = data.split("\n");
+        //     if(ll[1] == "Refreshing:"){
+        //         for(i=2;i<ll.length - 1; i++){
+        //             values = ll[i].split("\t");
+        //             // console.log(d)
+        //             processObjects.push({
+        //                 "Program": values[0],
+        //                 "Sent":values[1],
+        //                 "Recieved":values[2]
+        //             })
+        //         }
+        //     }
+        // });
     }
+
 }
+
+var a = new NetworkHandle();
+a.networkActivityMonitoring();

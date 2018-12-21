@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var shelljs_1 = require("shelljs");
-var NetworkHandle = /** @class */ (function () {
-    function NetworkHandle() {
+const shelljs_1 = require("shelljs");
+class NetworkHandle {
+    constructor() {
         this.networkCardsList = [];
         this.separator = "%%%";
         this.networkCardsList = [];
@@ -10,8 +10,8 @@ var NetworkHandle = /** @class */ (function () {
         this.networkSpeed = 0;
         this.networkSpeedListCollection = [];
     }
-    NetworkHandle.prototype.netstatPID = function (pid) {
-        var netstats = shelljs_1.exec("netstat -tanp | grep 1", { silent: true }).stdout.toString().split("\n");
+    netstatPID(pid = "1") {
+        var netstats = shelljs_1.exec("netstat -tanp | grep" + pid, { silent: true }).stdout.toString().split("\n");
         var processObjects = [];
         for (var j = 0; j < netstats.length - 1; j++) { // first two being the headings
             var b = netstats[j].split(" ");
@@ -21,7 +21,7 @@ var NetworkHandle = /** @class */ (function () {
                 if (!(b[x].trim() == "") && x != (b.length - 1))
                     b_filtered.push(b[x].trim());
                 else if (x == (b.length - 1))
-                    if (!b[x].startsWith(1))
+                    if (!b[x].startsWith("1"))
                         b_filtered.push("%%%removethis%%%");
                     else
                         b_filtered.push(b[x].trim());
@@ -40,8 +40,8 @@ var NetworkHandle = /** @class */ (function () {
             }
         }
         return processObjects;
-    };
-    NetworkHandle.prototype.netstatALL = function () {
+    }
+    netstatALL() {
         var proc = shelljs_1.exec("netstat -tanp", { silent: true }).stdout.toString().split("\n");
         var headers = proc[1].trim().split(" ");
         // making list of it
@@ -73,14 +73,13 @@ var NetworkHandle = /** @class */ (function () {
             });
         }
         return processObjects;
-    };
-    NetworkHandle.prototype.networkActivityMonitoring = function () {
+    }
+    networkActivityMonitoring() {
         var i, values;
         var ll = [];
         var processObjects = [];
-        var child = shelljs_1.exec('nethogs -t', { silent: true, async: true });
-        child.stdout.on('data', function (data) {
-            ll = data.split("\n");
+        var child = shelljs_1.exec('nethogs -t', { silent: true, async: true }).stdout.toString().split("\n");
+        child.forEach(ll => {
             if (ll[1] == "Refreshing:") {
                 for (i = 2; i < ll.length - 1; i++) {
                     values = ll[i].split("\t");
@@ -92,8 +91,24 @@ var NetworkHandle = /** @class */ (function () {
                     });
                 }
             }
+            console.log(processObjects);
         });
-    };
-    return NetworkHandle;
-}());
+        // child.stdout.on('data', function(data:any) {
+        //     ll = data.split("\n");
+        //     if(ll[1] == "Refreshing:"){
+        //         for(i=2;i<ll.length - 1; i++){
+        //             values = ll[i].split("\t");
+        //             // console.log(d)
+        //             processObjects.push({
+        //                 "Program": values[0],
+        //                 "Sent":values[1],
+        //                 "Recieved":values[2]
+        //             })
+        //         }
+        //     }
+        // });
+    }
+}
 exports.NetworkHandle = NetworkHandle;
+var a = new NetworkHandle();
+a.networkActivityMonitoring();
