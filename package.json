@@ -4,7 +4,7 @@
   "description": "monitor application to monitor system processes",
   "main": "main.js",
   "scripts": {
-    "test": "test",
+    "test": "node ./app/src/frameTests.js",
     "start": "electron ./app/src/main.js"
   },
   "repository": {
