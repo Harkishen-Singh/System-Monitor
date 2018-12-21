@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var shelljs_1 = require("shelljs");
-var ProcessesHandle = /** @class */ (function () {
-    function ProcessesHandle() {
+const shelljs_1 = require("shelljs");
+class ProcessesHandle {
+    constructor() {
+        console.log('working');
         this.separator = "%%%";
         this.processCurrentTrimmed = [];
         this.pidLists = [];
@@ -15,38 +16,45 @@ var ProcessesHandle = /** @class */ (function () {
         this.processLine = "";
         this.processLineAll = "";
     }
-    ProcessesHandle.prototype.filterProcesses = function (prs) {
-        var _this = this;
+    filterProcesses(prs) {
         for (var i = 0; i < prs.length; i++) {
             var one = prs[i].trim().split(" ");
             var pure = [], count = 0;
-            one.forEach(function (j) {
-                count++;
-                try {
+            one.forEach((j) => {
+                if (j.length) {
+                    count++;
+                    // try {
                     if (count == 1 && i != 0) {
-                        _this.pidLists.push(parseInt(j.trim()));
+                        this.pidLists.push(parseInt(j));
+                        pure.push(j);
                     }
                     else if (count == 2 && i == 0) {
-                        _this.pidLists.push(1);
+                        this.pidLists.push(1);
                     }
+                    // } catch (e) {}
                 }
-                catch (e) { }
-                var a = j.trim();
-                if (!a.trim().length)
-                    pure.push(a);
             });
             this.processCurrentTrimmed.push(pure);
         }
         this.getProcessDetails_catProc(this.pidLists);
-    };
-    ProcessesHandle.prototype.getAllCurrentProcesses = function () {
+    }
+    startScanCurrentProcesses() {
         // get all running process in batch mode in single iteration
         var topExe = shelljs_1.exec("top -b -n 1", { silent: true }).stdout.toString().split("\n"), psExe = shelljs_1.exec("ps -e", { silent: true }).stdout.toString().split("\n");
         if (!topExe && !psExe)
             shelljs_1.exit(1);
         this.processCurrentArray = topExe;
+        for (let p = 0; p < this.processCurrentArray.length; p++) {
+            let temp = [];
+            let onePro = this.processCurrentArray[p].split(' ');
+            for (let tt = 0; tt < onePro.length; tt++) {
+                if (onePro[tt].length)
+                    temp.push(onePro[tt]);
+            }
+            this.processCurrentArray[p] = temp.join(",");
+        }
         this.filterProcesses(this.processCurrentArray);
-    };
+    }
     /**
      * USE CASE EXAMPLE ( PID 13021 -> JAVA )
      * Name:   java
@@ -104,24 +112,46 @@ var ProcessesHandle = /** @class */ (function () {
      * voluntary_ctxt_switches:        1
      * nonvoluntary_ctxt_switches:     0
      * */
-    ProcessesHandle.prototype.getProcessDetails_catProc = function (ps) {
-        var _this = this;
-        ps.forEach(function (pid) {
-            var currentProcess = shelljs_1.exec("cat" + "/proc/" + String(pid) + "/status", { silent: true }).stdout.toString().split("\n");
-            currentProcess.forEach(function (pp) {
-                pp.replace(/,/g, "|");
-                _this.processDetailsArrayAll.push(pp);
+    getProcessDetails_catProc(ps) {
+        let count = 0;
+        ps.forEach((pid) => {
+            count++;
+            let objectTh = {};
+            var currentProcess = shelljs_1.exec("cat " + "/proc/" + (pid) + "/status", { silent: true }).stdout.toString().split("\n");
+            currentProcess.forEach(pp => {
+                try {
+                    let pros = pp.split(":");
+                    let keyTh = pros[0];
+                    let value = pros[1].substr(2);
+                    objectTh[keyTh] = value;
+                }
+                catch (e) { }
             });
-            _this.processDetailsArray = _this.processDetailsAll.split(_this.separator);
-            _this.processDetailsArrayAll.push(_this.processDetailsArray);
-            _this.processDetailsAll = "";
-            _this.psDetailMap.push(_this.detailsToMaps(currentProcess));
+            this.processDetailsAll = "";
+            this.processDetailsArrayAll.push(objectTh);
+            console.warn('count: ' + count);
         });
-        return this.psDetailMap;
-    };
-    ProcessesHandle.prototype.detailsToMaps = function (d) {
-        var processDetails = {};
-        d.forEach(function (x) {
+        return this.processDetailsArrayAll;
+    }
+    getRunningProcesses() {
+        this.startScanCurrentProcesses();
+        return new Promise((resolve, reject) => {
+            resolve({
+                result: this.processDetailsArrayAll,
+                state: 'valid'
+            });
+            setTimeout(() => {
+                if (!this.processDetailsArrayAll)
+                    reject({
+                        result: null,
+                        state: 'timeout'
+                    });
+            });
+        });
+    }
+    detailsToMaps(d) {
+        let processDetails = {};
+        d.forEach((x) => {
             x.replace(/:/g, "%%%");
             try {
                 processDetails[x.split(":")[0]] = x.split(":")[1].trim();
@@ -131,18 +161,17 @@ var ProcessesHandle = /** @class */ (function () {
             }
         });
         return processDetails;
-    };
-    ProcessesHandle.prototype.displayAllFunctionalities = function () {
+    }
+    displayAllFunctionalities() {
         console.log("display function");
         console.log(this.psDetailMap);
-    };
-    ProcessesHandle.prototype.runFunctionalities = function () {
-        this.getAllCurrentProcesses();
-    };
-    ProcessesHandle.prototype.runTests = function () {
-        this.getAllCurrentProcesses();
+    }
+    runFunctionalities() {
+        this.getRunningProcesses();
+    }
+    runTests() {
+        this.startScanCurrentProcesses();
         return true;
-    };
-    return ProcessesHandle;
-}());
+    }
+}
 exports.ProcessesHandle = ProcessesHandle;

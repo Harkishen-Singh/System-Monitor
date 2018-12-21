@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu } from 'electron';
+import { ProcessesHandle } from './subprocesses/ProcessHandle';
 
 var mainWindow = null;
 

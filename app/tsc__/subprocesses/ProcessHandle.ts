@@ -1,4 +1,5 @@
-import { exec, cp, exit } from 'shelljs';
+import { exec, cp, exit, cat } from 'shelljs';
+import { resolve } from 'url';
 
 export class ProcessesHandle {
 
@@ -15,6 +16,7 @@ export class ProcessesHandle {
     public psDetailMap: object[];
 
     constructor() {
+        console.log('working')
         this.separator = "%%%";
         this.processCurrentTrimmed = [];
         this.pidLists = [];
@@ -33,32 +35,39 @@ export class ProcessesHandle {
             var one = prs[i].trim().split(" ");
             var pure: string[]= [], count: number=0;
             one.forEach((j: string) => {
-                count++;
-                try {
+                if (j.length) {
+                    count++;
+                // try {
                     if (count==1 && i!=0) {
-                        this.pidLists.push(parseInt(j.trim()));
+                        this.pidLists.push(parseInt(j));
+                        pure.push(j);
                     } else if (count==2 && i==0) {
                         this.pidLists.push(1);
                     }
-                } catch (e) {}
-                var a = j.trim();
-                if (!a.trim().length)
-                    pure.push(a);
+                // } catch (e) {}
+                }
             });
             this.processCurrentTrimmed.push(pure);
         }
         this.getProcessDetails_catProc(this.pidLists);
     }
 
-
-    public getAllCurrentProcesses() {
+    public startScanCurrentProcesses() {
         // get all running process in batch mode in single iteration
         var topExe = exec("top -b -n 1", {silent: true}).stdout.toString().split("\n"),
             psExe = exec("ps -e", {silent: true}).stdout.toString().split("\n");
         if (!topExe && !psExe)
             exit(1);
-
-        this.processCurrentArray = topExe
+        this.processCurrentArray = topExe;
+        for(let p = 0; p< this.processCurrentArray.length; p++) {
+            let temp: string[] = [];
+            let onePro: string[] = this.processCurrentArray[p].split(' ');
+            for(let tt =0; tt< onePro.length; tt++) {
+                if (onePro[tt].length)
+                    temp.push(onePro[tt])
+            }
+            this.processCurrentArray[p] = temp.join(",");
+        }
         this.filterProcesses(this.processCurrentArray);
     }
 
@@ -121,18 +130,41 @@ export class ProcessesHandle {
      * */
 
     public getProcessDetails_catProc(ps: number[]) {
+        let count = 0;
         ps.forEach( (pid: number) => {
-            var currentProcess = exec("cat" + "/proc/"+String(pid)+"/status", { silent: true }).stdout.toString().split("\n");
+            count++;
+            let objectTh: any = {};
+            var currentProcess = exec("cat " + "/proc/"+(pid)+"/status", { silent: true }).stdout.toString().split("\n");
             currentProcess.forEach( pp => {
-                pp.replace(/,/g, "|");
-                this.processDetailsArrayAll.push(pp);
+                try {
+                    let pros = pp.split(":")
+                    let keyTh: any = pros[0];
+                    let value: any = pros[1].substr(2);
+                    objectTh[keyTh] = value;
+                } catch(e) {}
             })
-            this.processDetailsArray = this.processDetailsAll.split(this.separator);
-            this.processDetailsArrayAll.push(this.processDetailsArray);
             this.processDetailsAll = "";
-            this.psDetailMap.push(this.detailsToMaps(currentProcess));
+            this.processDetailsArrayAll.push(objectTh);
+            console.warn('count: '+count)
         });
-        return this.psDetailMap;
+        return this.processDetailsArrayAll;
+    }
+
+    public getRunningProcesses() {
+        this.startScanCurrentProcesses();
+        return new Promise((resolve: any, reject: any) => {
+            resolve({
+                result: this.processDetailsArrayAll,
+                state: 'valid'
+            });
+            setTimeout(() => {
+                if (!this.processDetailsArrayAll)
+                    reject({
+                        result: null,
+                        state: 'timeout'
+                    });
+            });
+        });
     }
 
     private detailsToMaps(d: string[]) {
@@ -155,11 +187,11 @@ export class ProcessesHandle {
     }
 
     public runFunctionalities() {
-        this.getAllCurrentProcesses();
+        this.getRunningProcesses();
     }
 
     public runTests() {
-        this.getAllCurrentProcesses();
+        this.startScanCurrentProcesses();
         return true;
     }
 }
