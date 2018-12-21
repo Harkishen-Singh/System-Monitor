@@ -1,3 +1,5 @@
+import { exec, cp, exit } from 'shelljs';
+
 export class ProcessesHandle {
 
     private processLine: string;
@@ -26,7 +28,7 @@ export class ProcessesHandle {
         this.processLineAll = "";
     }
 
-    private filterProcesses(prs: string) {
+    private filterProcesses(prs: string[]) {
         for (var i =0; i< prs.length; i++) {
             var one = prs[i].trim().split(" ");
             var pure: string[]= [], count: number=0;
@@ -51,24 +53,12 @@ export class ProcessesHandle {
 
     public getAllCurrentProcesses() {
         // get all running process in batch mode in single iteration
-        var procSys = new ProcessBuilder("top", "-b" ,"-n", "1");
-        ProcessBuilder procMain = new ProcessBuilder("ps", "-e");
-        Process proc = procMain.start();
-        BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        var topExe = exec("top -b -n 1", {silent: true}).stdout.toString().split("\n"),
+            psExe = exec("ps -e", {silent: true}).stdout.toString().split("\n");
+        if (!topExe && !psExe)
+            exit(1);
 
-        this.processLine = br.readLine();
-        try {
-            while (true) {
-                this.processLine = br.readLine();
-                if (this.processLine.trim().equals("")) {
-                    break;
-                }
-                this.processLineAll += this.processLine + this.separator;
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Finished scanning");
-        }
-        this.processCurrentArray = this.processLineAll.split(separator);
+        this.processCurrentArray = topExe
         this.filterProcesses(this.processCurrentArray);
     }
 
@@ -130,48 +120,38 @@ export class ProcessesHandle {
      * nonvoluntary_ctxt_switches:     0
      * */
 
-    public List<Map<var, var>> getProcessDetails_catProc(List<Integer> ps) {
-        BufferedReader Br;
-        for (int pid: ps) {
-            ProcessBuilder prr = new ProcessBuilder("cat", "/proc/"+var.valueOf(pid)+"/status");
-            Process prrRun = prr.start();
-            Br = new BufferedReader(new InputStreamReader(prrRun.getInputStream()));
-            try {
-                while (true) {
-                    this.processLine = Br.readLine();
-                    if (this.processLine.trim().equals("")) {
-                        break;
-                    }
-                    this.processDetailsAll += this.processLine.replaceAll(",", "|") + this.separator;
-
-                }
-            } catch (Exception e) {;}
+    public getProcessDetails_catProc(ps: number[]) {
+        ps.forEach( (pid: number) => {
+            var currentProcess = exec("cat" + "/proc/"+String(pid)+"/status", { silent: true }).stdout.toString().split("\n");
+            currentProcess.forEach( pp => {
+                pp.replace(/,/g, "|");
+                this.processDetailsArrayAll.push(pp);
+            })
             this.processDetailsArray = this.processDetailsAll.split(this.separator);
-            this.processDetailsArrayAll.add(this.processDetailsArray);
-            this.processDetailsArrayAllvarified.add(Arrays.tovar(this.processDetailsArray));
+            this.processDetailsArrayAll.push(this.processDetailsArray);
             this.processDetailsAll = "";
-            this.psDetailMap.add(this.detailsToMaps(this.processDetailsArray));
-        }
+            this.psDetailMap.push(this.detailsToMaps(currentProcess));
+        });
         return this.psDetailMap;
     }
 
-    private Map<var,var> detailsToMaps(var[] d) {
-        Map<var, var> processDetails = new LinkedHashMap<var, var>();
-        for (var x: d) {
-            x.replaceAll(":", "%%%");
+    private detailsToMaps(d: string[]) {
+        let processDetails: any = {};
+        d.forEach( (x: string)=> {
+            x.replace(/:/g, "%%%");
             try {
-                processDetails.put(x.split(":")[0], x.split(":")[1].trim());
-            } catch (ArrayIndexOutOfBoundsException e) {
-                processDetails.put(x.split(":")[0], "");
+                processDetails[x.split(":")[0]] = x.split(":")[1].trim();
+            } catch (e) {
+                processDetails[x.split(":")[0]] = "";
             }
-        }
+        });
         return processDetails;
 
     }
 
     public displayAllFunctionalities() {
-        System.out.println("display function");
-        System.out.println(this.psDetailMap);
+        console.log("display function");
+        console.log(this.psDetailMap);
     }
 
     public runFunctionalities() {
