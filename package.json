@@ -4,7 +4,7 @@
   "description": "monitor application to monitor system processes",
   "main": "./app/src/main.js",
   "scripts": {
-    "test": "node ./app/src/frameTests.js",
+    "test": "node ./tests/main.js",
     "start": "electron ./app/src/main.js",
     "build": "electron-packager . System-monitor",
     "package": "asar pack System-monitor-linux-x64/resources/app System-monitor-linux-x64/resources/app.asar"
