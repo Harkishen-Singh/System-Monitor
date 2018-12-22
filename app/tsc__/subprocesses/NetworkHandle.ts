@@ -1,4 +1,4 @@
-import { exec } from 'shelljs';
+import { exec, exit } from 'shelljs';
 import { shell } from "electron";
 
 export class NetworkHandle {
@@ -86,7 +86,7 @@ export class NetworkHandle {
         return this.networkStatsList;
     }
 
-    public networkActivityMonitoring() {
+    public networkActivityMonitoring(test: boolean = false) {
         var i : number,
             a : number,
             b : number = 0,
@@ -128,8 +128,16 @@ export class NetworkHandle {
                             "Recieved":values[2]
                         })
                     }
+                    if (test) {
+                        setTimeout(() => {
+                            console.warn("In testing timeouts! Breaking!");
+                            exit(0);
+                        }, 5000);
+                    } else {
+                        console.warn('Test Case Inactive');
+                    }
                 }
-            }  
+            }
             self.networkSpeedListCollection = processObjects;
             console.log(self.networkSpeedListCollection)
         });

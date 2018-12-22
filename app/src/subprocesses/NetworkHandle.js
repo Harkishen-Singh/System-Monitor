@@ -74,7 +74,7 @@ class NetworkHandle {
         this.networkStatsList = processObjects;
         return this.networkStatsList;
     }
-    networkActivityMonitoring() {
+    networkActivityMonitoring(test = false) {
         var i, a, b = 0, len;
         var values = [];
         var ll = [];
@@ -112,6 +112,15 @@ class NetworkHandle {
                             "Sent": values[1],
                             "Recieved": values[2]
                         });
+                    }
+                    if (test) {
+                        setTimeout(() => {
+                            console.warn("In testing timeouts! Breaking!");
+                            shelljs_1.exit(0);
+                        }, 5000);
+                    }
+                    else {
+                        console.warn('Test Case Inactive');
                     }
                 }
             }
