@@ -1,0 +1,27 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended", "tslint-config-prettier"
+    ],
+    "jsRules": {},
+    "rules": {
+        "no-console": false,
+        "variable-name": [
+            false,
+            "ban-keywords",
+            "check-format",
+            "allow-leading-underscore"
+          ],
+        "naming-convention": [false,
+            {"type": "member", "format": "camelCase"},
+            {"type": "member", "modifiers": "protected", "leadingUnderscore": "require"},
+            {"type": "member", "modifiers": "private", "prefix": "__"}
+        ],
+        "curly": [true, "same-line-single-line"],
+        "object-literal-sort-keys": false,
+        "prefer-for-of": false,
+        "indent": [true, "spaces", 1]
+    },
+    "rulesDirectory": [],
+    "semicolon": [true, "always"]
+}

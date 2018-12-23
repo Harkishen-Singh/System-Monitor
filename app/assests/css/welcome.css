@@ -1,7 +1,7 @@
 #leftpanel{
     background-color: #1982de;
-    min-height: 600px;
-    overflow:hidden;
+    height: 600px;
+    overflow-x: hidden;
 }
 
 .wTitle{
@@ -22,11 +22,11 @@
 }
 
 #welcome{
-    font-size: 30px;
+    font-size: 20px;
 }
 
 #appname{
-    font-size:40px;
+    font-size:30px;
     font-weight:bolder;
     color: #1982de;
 }
