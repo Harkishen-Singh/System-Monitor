@@ -7,7 +7,7 @@ export class DBService {
 
     constructor(databaseName: string) {
         this.information = "";
-        this.database = new JsonDB('./store'+databaseName.toString());
+        this.database = new JsonDB(databaseName.toString());
     }
 
     public reload() {
@@ -34,3 +34,4 @@ export class DBService {
         this.database.delete(address);
     }
 }
+

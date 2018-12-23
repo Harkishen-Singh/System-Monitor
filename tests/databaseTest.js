@@ -2,7 +2,7 @@ const db = require('../app/src/dbService');
 const shelljs = require('shelljs');
 
 function DatabaseServiceTest() {
-    var database = new db.DBService("testDatabase"),
+    var database = new db.DBService("testDatabase2"),
         first = "check1",
         second = ["ch", "eck1"],
         third = {"ch": "eck1"};
@@ -21,5 +21,4 @@ function DatabaseServiceTest() {
         shelljs.exit(1);
     }
 }
-
 exports.DatabaseServiceTest = DatabaseServiceTest;

@@ -125,11 +125,7 @@ class NetworkHandle {
                 }
             }
             self.networkSpeedListCollection = processObjects;
-            console.log(self.networkSpeedListCollection);
         });
-        // return this.networkSpeedListCollection;
     }
 }
 exports.NetworkHandle = NetworkHandle;
-var a = new NetworkHandle();
-a.networkActivityMonitoring();

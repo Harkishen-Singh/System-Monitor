@@ -7,7 +7,7 @@ const node_json_db_1 = __importDefault(require("node-json-db"));
 class DBService {
     constructor(databaseName) {
         this.information = "";
-        this.database = new node_json_db_1.default('./store' + databaseName.toString());
+        this.database = new node_json_db_1.default(databaseName.toString());
     }
     reload() {
         this.database.reload();
