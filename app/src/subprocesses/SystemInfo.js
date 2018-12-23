@@ -11,17 +11,16 @@ class SystemInfo {
      */
     extractDetails() {
         var getDetails;
+        var self = this;
         systeminformation_1.getStaticData()
-            .then(data => {
-            console.log(data);
+            .then(function (data) {
             getDetails = data;
-            this.details = getDetails;
-            this.insertData();
+            self.details = getDetails;
+            self.insertData();
         });
     }
     insertData() {
         var IData = new dbService_1.DBService('../store/SystemInfoFile');
-        console.log(this.details);
         IData.save('/info', this.details);
     }
 }

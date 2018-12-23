@@ -1,6 +1,6 @@
 import {getStaticData, version,cpu} from 'systeminformation';
 import {DBService} from '../dbService';
-export class SystemInfo{
+class SystemInfo{
 
     public details : any;
 
@@ -14,19 +14,19 @@ export class SystemInfo{
 
     public extractDetails(){
         var getDetails ;
+        var self = this;
         getStaticData()
-            .then(data =>{
-                console.log(data);
+            .then(function(data){
                 getDetails = data;
-                this.details = getDetails;
-                this.insertData();
+                self.details = getDetails;
+                self.insertData();
             })
     }
 
     public insertData(){
         var IData = new DBService('../store/SystemInfoFile')
-        console.log(this.details)
         IData.save('/info', this.details)
     }
 }
 
+exports.SystemInfo = SystemInfo;

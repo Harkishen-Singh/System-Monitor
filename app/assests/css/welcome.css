@@ -1,0 +1,52 @@
+#leftpanel{
+    background-color: #1982de;
+    min-height: 600px;
+    overflow:hidden;
+}
+
+.wTitle{
+    display:inline;
+}
+
+.step{
+    padding:10px 0px 10px 0px;
+}
+#configSteps{
+    margin-top:200px;
+    
+}
+
+.intro{
+    text-align: center;
+    margin-top: 100px;
+}
+
+#welcome{
+    font-size: 30px;
+}
+
+#appname{
+    font-size:40px;
+    font-weight:bolder;
+    color: #1982de;
+}
+
+.fDetails{
+    display: inline;
+}
+
+.featureDetails{
+    margin-left:130px;
+    margin-top:20px;
+}
+
+.feature{
+    padding-top:30px;
+}
+
+#continue{
+    position: absolute;
+    top:70%;
+    left:35%;
+    width:120px;
+}
