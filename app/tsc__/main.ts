@@ -4,6 +4,7 @@ import { ProcessesHandle } from './subprocesses/ProcessHandle';
 var mainWindow = null;
 
 app.on('ready', () => {
+    
     mainWindow = new BrowserWindow({
         backgroundColor: '#fff',
         title: 'System Monitor | Welcome',
