@@ -1,14 +1,15 @@
 import { app, BrowserWindow, Menu } from 'electron';
-import { ProcessesHandle } from './subprocesses/ProcessHandle';
 import {DBService} from './dbService';
-var mainWindow = null;
+import { ProcessesHandle } from './subprocesses/ProcessHandle';
+
+let mainWindow = null;
 
 app.on('ready', () => {
     
     mainWindow = new BrowserWindow({
         backgroundColor: '#fff',
-        title: 'System Monitor | Welcome',
         height: 600,
+        title: 'System Monitor | Welcome',
         width: 800
     });
     
@@ -16,9 +17,9 @@ app.on('ready', () => {
         mainWindow = null;
     });
 
-    //checks for if the user has used the app for the first time
-    var checkData = new DBService('./app/src/store/SystemInfoFile')
-    var check = checkData.getStore('/')
+    // checks for if the user has used the app for the first time
+    const checkData = new DBService('./app/src/store/SystemInfoFile')
+    const check = checkData.getStore('/')
 
     console.log(Object.keys(check).length);
     
