@@ -31,4 +31,5 @@ app.on('ready', () => {
 
     mainWindow.webContents.openDevTools();
     Menu.setApplicationMenu(null);
+    mainWindow.setMenu(null);
 });

@@ -25,4 +25,5 @@ electron_1.app.on('ready', () => {
     }
     mainWindow.webContents.openDevTools();
     electron_1.Menu.setApplicationMenu(null);
+    mainWindow.setMenu(null);
 });

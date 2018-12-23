@@ -16,7 +16,7 @@ class SystemInfo{
         var getDetails ;
         var self = this;
         getStaticData()
-            .then(function(data){
+            .then(function(data: any){
                 getDetails = data;
                 self.details = getDetails;
                 self.insertData();
