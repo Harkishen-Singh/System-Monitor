@@ -22,7 +22,7 @@ app.on('ready', () => {
 
     console.log(Object.keys(check).length);
     
-    if(Object.keys(check).length === 0 ){
+    if (Object.keys(check).length === 0 ) {
         mainWindow.loadURL('file://'+__dirname+'/views/onFirstStart/Welcome.html');
     }
     else{
