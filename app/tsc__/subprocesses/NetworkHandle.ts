@@ -139,11 +139,7 @@ export class NetworkHandle {
                 }
             }
             self.networkSpeedListCollection = processObjects;
-            console.log(self.networkSpeedListCollection)
         });
-        // return this.networkSpeedListCollection;
     }
 }
 
-var a = new NetworkHandle();
-a.networkActivityMonitoring();

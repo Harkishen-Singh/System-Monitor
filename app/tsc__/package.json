@@ -12,6 +12,7 @@
     "@types/node": "^10.12.18",
     "@types/node-json-db": "0.0.1",
     "@types/shelljs": "^0.8.1",
+    "@types/systeminformation": "^3.23.1",
     "shelljs": "^0.8.3"
   }
 }
