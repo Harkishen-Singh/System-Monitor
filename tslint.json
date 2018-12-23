@@ -20,7 +20,8 @@
         "curly": [true, "same-line-single-line"],
         "object-literal-sort-keys": false,
         "prefer-for-of": false,
-        "indent": [true, "spaces", 2]
+        "indent": [true, "spaces", 1]
     },
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "semicolon": [true, "always"]
 }

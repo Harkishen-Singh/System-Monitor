@@ -1,4 +1,4 @@
-import {getStaticData, version,cpu} from 'systeminformation';
+import { cpu, getStaticData, version } from 'systeminformation';
 import {DBService} from '../dbService';
 class SystemInfo{
 
@@ -13,10 +13,10 @@ class SystemInfo{
      */
 
     public extractDetails(){
-        var getDetails ;
-        var self = this;
+        let getDetails: any;
+        const self: this = this;
         getStaticData()
-            .then(function(data: any){
+            .then((data: any) => {
                 getDetails = data;
                 self.details = getDetails;
                 self.insertData();
@@ -24,7 +24,7 @@ class SystemInfo{
     }
 
     public insertData(){
-        var IData = new DBService('../store/SystemInfoFile')
+        const IData = new DBService('../store/SystemInfoFile')
         IData.save('/info', this.details)
     }
 }
