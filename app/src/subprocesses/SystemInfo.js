@@ -10,18 +10,18 @@ class SystemInfo {
      * Reference : https://www.npmjs.com/package/systeminformation#reference
      */
     extractDetails() {
-        var getDetails;
-        var self = this;
+        let getDetails;
+        const self = this;
         systeminformation_1.getStaticData()
-            .then(function (data) {
+            .then((data) => {
             getDetails = data;
             self.details = getDetails;
             self.insertData();
         });
     }
     insertData() {
-        var IData = new dbService_1.DBService('../store/SystemInfoFile');
-        IData.save('/info', this.details);
+        const IData = new dbService_1.DBService("../store/SystemInfoFile");
+        IData.saveObject("/SystemDetails", this.details);
     }
 }
 exports.SystemInfo = SystemInfo;

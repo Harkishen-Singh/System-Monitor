@@ -16,40 +16,21 @@ class ProcessesHandle {
         this.processLine = "";
         this.processLineAll = "";
     }
-    filterProcesses(prs) {
-        for (var i = 0; i < prs.length; i++) {
-            var one = prs[i].trim().split(" ");
-            var pure = [], count = 0;
-            one.forEach((j) => {
-                if (j.length) {
-                    count++;
-                    // try {
-                    if (count == 1 && i != 0) {
-                        this.pidLists.push(parseInt(j));
-                        pure.push(j);
-                    }
-                    else if (count == 2 && i == 0) {
-                        this.pidLists.push(1);
-                    }
-                    // } catch (e) {}
-                }
-            });
-            this.processCurrentTrimmed.push(pure);
-        }
-        this.getProcessDetails_catProc(this.pidLists);
-    }
     startScanCurrentProcesses() {
         // get all running process in batch mode in single iteration
-        var topExe = shelljs_1.exec("top -b -n 1", { silent: true }).stdout.toString().split("\n"), psExe = shelljs_1.exec("ps -e", { silent: true }).stdout.toString().split("\n");
-        if (!topExe && !psExe)
+        const topExe = shelljs_1.exec("top -b -n 1", { silent: true }).stdout.toString().split("\n");
+        const psExe = shelljs_1.exec("ps -e", { silent: true }).stdout.toString().split("\n");
+        if (!topExe && !psExe) {
             shelljs_1.exit(1);
+        }
         this.processCurrentArray = topExe;
         for (let p = 0; p < this.processCurrentArray.length; p++) {
-            let temp = [];
-            let onePro = this.processCurrentArray[p].split(' ');
+            const temp = [];
+            const onePro = this.processCurrentArray[p].split(' ');
             for (let tt = 0; tt < onePro.length; tt++) {
-                if (onePro[tt].length)
+                if (onePro[tt].length) {
                     temp.push(onePro[tt]);
+                }
             }
             this.processCurrentArray[p] = temp.join(",");
         }
@@ -111,21 +92,23 @@ class ProcessesHandle {
      * Mems_allowed_list:      0
      * voluntary_ctxt_switches:        1
      * nonvoluntary_ctxt_switches:     0
-     * */
+     */
     getProcessDetails_catProc(ps) {
         let count = 0;
         ps.forEach((pid) => {
             count++;
-            let objectTh = {};
-            var currentProcess = shelljs_1.exec("cat " + "/proc/" + (pid) + "/status", { silent: true }).stdout.toString().split("\n");
+            const objectTh = {};
+            const currentProcess = shelljs_1.exec("cat " + "/proc/" + (pid) + "/status", { silent: true }).stdout.toString().split("\n");
             currentProcess.forEach(pp => {
                 try {
-                    let pros = pp.split(":");
-                    let keyTh = pros[0];
-                    let value = pros[1].substr(2);
+                    const pros = pp.split(":");
+                    const keyTh = pros[0];
+                    const value = pros[1].substr(2);
                     objectTh[keyTh] = value;
                 }
-                catch (e) { }
+                catch (e) {
+                    ;
+                }
             });
             this.processDetailsAll = "";
             this.processDetailsArrayAll.push(objectTh);
@@ -135,32 +118,21 @@ class ProcessesHandle {
     }
     getRunningProcesses() {
         this.startScanCurrentProcesses();
-        return new Promise((resolve, reject) => {
-            resolve({
+        const ProcessPromise = new Promise((resolvePro, reject) => {
+            resolvePro({
                 result: this.processDetailsArrayAll,
                 state: 'valid'
             });
             setTimeout(() => {
-                if (!this.processDetailsArrayAll)
+                if (!this.processDetailsArrayAll) {
                     reject({
                         result: null,
                         state: 'timeout'
                     });
+                }
             });
         });
-    }
-    detailsToMaps(d) {
-        let processDetails = {};
-        d.forEach((x) => {
-            x.replace(/:/g, "%%%");
-            try {
-                processDetails[x.split(":")[0]] = x.split(":")[1].trim();
-            }
-            catch (e) {
-                processDetails[x.split(":")[0]] = "";
-            }
-        });
-        return processDetails;
+        return ProcessPromise;
     }
     displayAllFunctionalities() {
         console.log("display function");
@@ -172,6 +144,42 @@ class ProcessesHandle {
     runTests() {
         this.startScanCurrentProcesses();
         return true;
+    }
+    filterProcesses(prs) {
+        for (let i = 0; i < prs.length; i++) {
+            const one = prs[i].trim().split(" ");
+            const pure = [];
+            let count = 0;
+            one.forEach((j) => {
+                if (j.length) {
+                    count++;
+                    // try {
+                    if (count === 1 && i !== 0) {
+                        this.pidLists.push(parseInt(j, 10));
+                        pure.push(j);
+                    }
+                    else if (count === 2 && i === 0) {
+                        this.pidLists.push(1);
+                    }
+                    // } catch (e) {}
+                }
+            });
+            this.processCurrentTrimmed.push(pure);
+        }
+        this.getProcessDetails_catProc(this.pidLists);
+    }
+    detailsToMaps(d) {
+        const processDetails = {};
+        d.forEach((x) => {
+            x.replace(/:/g, "%%%");
+            try {
+                processDetails[x.split(":")[0]] = x.split(":")[1].trim();
+            }
+            catch (e) {
+                processDetails[x.split(":")[0]] = "";
+            }
+        });
+        return processDetails;
     }
 }
 exports.ProcessesHandle = ProcessesHandle;
