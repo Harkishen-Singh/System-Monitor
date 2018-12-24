@@ -25,7 +25,7 @@ export class SystemInfo{
     }
 
     public insertData(){
-        const IData = new DBService('../store/SystemInfoFile');
-        IData.saveObject('/SystemDetails', this.details);
+        const IData = new DBService("../store/SystemInfoFile");
+        IData.saveObject("/SystemDetails", this.details);
     }
 }

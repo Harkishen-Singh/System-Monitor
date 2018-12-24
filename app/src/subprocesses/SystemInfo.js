@@ -20,8 +20,8 @@ class SystemInfo {
         });
     }
     insertData() {
-        const IData = new dbService_1.DBService('../store/SystemInfoFile');
-        IData.saveObject('/SystemDetails', this.details);
+        const IData = new dbService_1.DBService("../store/SystemInfoFile");
+        IData.saveObject("/SystemDetails", this.details);
     }
 }
 exports.SystemInfo = SystemInfo;

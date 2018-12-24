@@ -1,27 +1,32 @@
-import {SystemInfo} from '../subprocesses/SystemInfo'
+import {SystemInfo} from "../subprocesses/SystemInfo"
 
-const checkcond = () =>{
-    const cond : boolean = (<HTMLInputElement>document.getElementById('termscheck')).checked;
-    const button : any = (<HTMLInputElement>document.getElementById('finish'));
-    if(cond === true){
+const checkcond = () => { 
+
+    const cond: any = document.getElementById("termscheck") as HTMLElement;
+    const check_cond: boolean = cond.checked;
+    const button: any = document.getElementById("finish") as HTMLElement;
+    
+    if(check_cond === true)
+    {
         button.disabled = false;
     }
-    else{
+    else
+    {
         button.disabled = true;
     }
 } 
 
 const saveDetails = () => {
-    const sd : any = new SystemInfo();
+    const sd: any = new SystemInfo();
     sd.extractDetails();
+};
+
+const finishEle: any = document.getElementById("finish");
+finishEle.onclick = () => {  
+    saveDetails();
 }
 
-const finishEle : any = document.getElementById('finish');
-finishEle.onclick = () =>{
-    saveDetails()
-}
-
-const check : any = document.getElementById('termscheck');
+const check: any = document.getElementById("termscheck");
 check.onclick = () => {
-    checkcond()
+    checkcond();
 }

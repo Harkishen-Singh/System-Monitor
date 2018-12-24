@@ -1,38 +1,44 @@
-import {DBService} from '../dbService';
+import {DBService} from "../dbService";
 
 function storeData(){
-    const username : any = (<HTMLInputElement>document.getElementById('username')).value;
-    const email : any = (<HTMLInputElement>document.getElementById('email')).value;    
+    const username: any = document.getElementById("username") as HTMLElement;
+    const usernameV: any = username.value;
+    const email: any = document.getElementById("email") as HTMLElement;
+    const emailV: any = email.value;
     
-    let bool : boolean = false;
+    let bool: boolean = false;
     const obj = {
-        Username : username,
-        EmailId : email
+        EmailId: emailV,
+        Username: usernameV
     };
 
-    if(username === "" || email === ""){
+    if(usernameV === "" || emailV === "")
+    {
         bool = false;
         return bool;
     }
     else{
         bool = true;
-        const file = new DBService('../store/SystemInfoFile')
-        file.saveObject('/UserDetails', obj)
+        const file = new DBService("../store/SystemInfoFile");
+        file.saveObject("/UserDetails", obj);
         return bool;
     }
 }
 
-const nextEle : any = document.getElementById('next');
+const nextEle: any = document.getElementById("next");
 
 nextEle.onclick = () => {
+
     const flag = storeData();
 
-    if( flag === true){
+    if( flag === true)
+    {
         window.location.href = "./AboutSoft.html";
     }
 
-    else{
-       document.getElementById('error').innerHTML = "Please Fill all the details";
+    else
+    {
+       document.getElementById("error").innerHTML = "Please Fill all the details";
     }
 }
 
