@@ -5,19 +5,17 @@ function storeData(){
     const usernameV: any = username.value;
     const email: any = document.getElementById("email") as HTMLElement;
     const emailV: any = email.value;
-    
     let bool: boolean = false;
     const obj = {
         EmailId: emailV,
         Username: usernameV
     };
 
-    if(usernameV === "" || emailV === "")
-    {
+    if ( usernameV === "" || emailV === "" ) {
         bool = false;
         return bool;
     }
-    else{
+    else {
         bool = true;
         const file = new DBService("../store/SystemInfoFile");
         file.saveObject("/UserDetails", obj);
@@ -31,13 +29,10 @@ nextEle.onclick = () => {
 
     const flag = storeData();
 
-    if( flag === true)
-    {
+    if ( flag === true ) {
         window.location.href = "./AboutSoft.html";
     }
-
-    else
-    {
+    else {
        document.getElementById("error").innerHTML = "Please Fill all the details";
     }
 }

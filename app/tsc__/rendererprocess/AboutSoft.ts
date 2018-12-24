@@ -1,9 +1,10 @@
-let nextEle : any = document.getElementById('next');
+let nextEle: any = document.getElementById("next");
 nextEle.onclick = () => {
-    window.location.href = './SubmitDetails.html';
+    window.location.href = "./SubmitDetails.html";
 }
 
-let prevEle : any = document.getElementById('back');
+let prevEle: any = document.getElementById("back");
+
 prevEle.onclick = () => {
-    window.location.href = './UserDetails.html'
+    window.location.href = "./UserDetails.html";
 }

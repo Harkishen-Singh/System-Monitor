@@ -5,7 +5,7 @@ export class SystemInfo{
 
     public details : any;
 
-    constructor(){
+    constructor() {
         this.details  = [];
     }
 
@@ -13,7 +13,7 @@ export class SystemInfo{
      * Reference : https://www.npmjs.com/package/systeminformation#reference
      */
 
-    public extractDetails(){
+    public extractDetails() {
         let getDetails: any;
         const self: this = this;
         getStaticData()
@@ -24,7 +24,7 @@ export class SystemInfo{
             })
     }
 
-    public insertData(){
+    public insertData() {
         const IData = new DBService("../store/SystemInfoFile");
         IData.saveObject("/SystemDetails", this.details);
     }
