@@ -14,7 +14,7 @@ function storeData(){
     if ( usernameV === "" || emailV === "" ) {
         bool = false;
         return bool;
-    }else {
+    } else {
         bool = true;
         const file = new DBService("../store/SystemInfoFile");
         file.saveObject("/UserDetails", obj);
@@ -30,7 +30,7 @@ nextEle.onclick = () => {
 
     if ( flag === true ) {
         window.location.href = "./AboutSoft.html";
-    }else {
+    } else {
        document.getElementById("error").innerHTML = "Please Fill all the details";
     }
 }
