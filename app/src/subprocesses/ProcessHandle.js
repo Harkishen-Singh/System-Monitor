@@ -107,7 +107,7 @@ class ProcessesHandle {
                     objectTh[keyTh] = value;
                 }
                 catch (e) {
-                    ;
+                    
                 }
             });
             this.processDetailsAll = "";
