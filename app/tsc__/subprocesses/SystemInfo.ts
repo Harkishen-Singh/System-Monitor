@@ -1,5 +1,6 @@
 import { cpu, getStaticData, version } from 'systeminformation';
 import {DBService} from '../dbService';
+
 export class SystemInfo{
 
     public details : any;
@@ -24,7 +25,7 @@ export class SystemInfo{
     }
 
     public insertData(){
-        const IData = new DBService('../store/SystemInfoFile')
-        IData.saveObject('/SystemDetails', this.details)
+        const IData = new DBService('../store/SystemInfoFile');
+        IData.saveObject('/SystemDetails', this.details);
     }
 }

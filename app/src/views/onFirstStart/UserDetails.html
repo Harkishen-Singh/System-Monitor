@@ -14,12 +14,14 @@
     <style>
         body{
             overflow: hidden;
+            height: 600px;
+            width: 800px;
         }
     </style>
 </head>
 <body>
     <div class = "row">
-        <div class = "col-sm-3" id="leftpanel">
+        <div class = "col-md-3" id="leftpanel">
             <div id="configSteps">
                 <ul style="list-style-type: none;"> 
                     <li id = "step1" class="step">
@@ -41,7 +43,8 @@
                 </ul>
             </div>
         </div>
-        <div class = "col-sm-9">
+
+        <div class = "col-md-9">
             <div style="height:20%">
                 <p style="padding-left:10px;padding-top: 10px;font-size: 18px;">Login Details</p>
                 <hr>
@@ -58,7 +61,6 @@
                         <label for="email">Email Id:</label>
                         <input style="border-radius: 0.6em;margin-left: 18px;" type="email" id="email" placeholder="Email Id" value="">
                     </div>
-
                 </form>
             </div>
             <div style="height:20%">
@@ -73,7 +75,11 @@
     <script>
         require('../../rendererprocess/UserDetails.js')
     </script>
-    
-
 </body>
 </html>
+
+
+
+
+
+
