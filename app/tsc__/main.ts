@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu} from 'electron';
+import { app, BrowserWindow, Menu} from "electron";
 import {DBService} from './dbService';
 import { ProcessesHandle } from './subprocesses/ProcessHandle';
 

@@ -10,7 +10,7 @@ const checkcond = () => {
     else {
         button.disabled = true;
     }
-}
+};
 
 const saveDetails = () => {
     const sd: any = new SystemInfo();
