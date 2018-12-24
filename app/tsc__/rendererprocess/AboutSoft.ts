@@ -1,4 +1,5 @@
 let nextEle: any = document.getElementById("next");
+
 nextEle.onclick = () => {
     window.location.href = "./SubmitDetails.html";
 };

@@ -9,7 +9,7 @@ function storeData() {
     let bool = false;
     const obj = {
         EmailId: emailV,
-        Username: usernameV
+        Username: usernameV,
     };
     if (usernameV === "" || emailV === "") {
         bool = false;
@@ -17,7 +17,7 @@ function storeData() {
     }
     else {
         bool = true;
-        const file = new dbService_1.DBService("../store/SystemInfoFile");
+        const file = new dbService_1.DBService("./app/src/store/SystemInfoFile");
         file.saveObject("/UserDetails", obj);
         return bool;
     }

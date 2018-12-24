@@ -20,7 +20,7 @@ class SystemInfo {
         });
     }
     insertData() {
-        const IData = new dbService_1.DBService("../store/SystemInfoFile");
+        const IData = new dbService_1.DBService("./app/src/store/SystemInfoFile");
         IData.saveObject("/SystemDetails", this.details);
     }
 }

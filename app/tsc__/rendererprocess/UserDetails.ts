@@ -16,7 +16,7 @@ function storeData(){
         return bool;
     } else {
         bool = true;
-        const file = new DBService("../store/SystemInfoFile");
+        const file = new DBService("./app/src/store/SystemInfoFile");
         file.saveObject("/UserDetails", obj);
         return bool;
     }
