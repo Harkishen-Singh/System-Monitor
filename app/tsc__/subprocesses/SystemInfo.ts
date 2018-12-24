@@ -1,6 +1,6 @@
 import { cpu, getStaticData, version } from 'systeminformation';
 import {DBService} from '../dbService';
-class SystemInfo{
+export class SystemInfo{
 
     public details : any;
 
@@ -25,8 +25,6 @@ class SystemInfo{
 
     public insertData(){
         const IData = new DBService('../store/SystemInfoFile')
-        IData.save('/info', this.details)
+        IData.saveObject('/SystemDetails', this.details)
     }
 }
-
-exports.SystemInfo = SystemInfo;

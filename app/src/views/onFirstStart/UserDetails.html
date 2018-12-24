@@ -47,24 +47,25 @@
                 <hr>
             </div>
             <div style= "height:60%">
+                <p id = "error"></p>
                 <form style="padding-left: 10px">
                     <div>
                         <label for="username">UserName:</label>
-                        <input style="border-radius: 0.6em" type="text" id="username" placeholder="Username">
+                        <input style="border-radius: 0.6em" type="text" id="username" placeholder="Username" value="">
                     </div>
                     
                     <div style="padding-top:20px;"> 
                         <label for="email">Email Id:</label>
-                        <input style="border-radius: 0.6em;margin-left: 18px;" type="email" id="email" placeholder="EmailId">
+                        <input style="border-radius: 0.6em;margin-left: 18px;" type="email" id="email" placeholder="Email Id" value="">
                     </div>
 
                 </form>
             </div>
             <div style="height:20%">
                 <hr>
-                <a  id = "next" style="float: right;padding-right: 10px;" onclick="storeData();">
-                    NEXT <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
+                <button type="button" id ="next" style="float:right; padding-right: 10px;margin-right: 10px;" class = "btn btn-primary">
+                NEXT <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
     </div>
