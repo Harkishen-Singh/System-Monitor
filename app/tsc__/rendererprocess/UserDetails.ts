@@ -1,17 +1,16 @@
 import {DBService} from '../dbService';
-const electron = require('electron')
 
 function storeData(){
-    let username : any = (<HTMLInputElement>document.getElementById('username')).value;
-    let email : any = (<HTMLInputElement>document.getElementById('email')).value;    
+    const username : any = (<HTMLInputElement>document.getElementById('username')).value;
+    const email : any = (<HTMLInputElement>document.getElementById('email')).value;    
     
     let bool : boolean = false;
-    let obj = {
+    const obj = {
         Username : username,
         EmailId : email
     };
 
-    if(username == "" || email == ""){
+    if(username === "" || email === ""){
         bool = false;
         return bool;
     }
@@ -23,12 +22,12 @@ function storeData(){
     }
 }
 
-let nextEle : any = document.getElementById('next');
+const nextEle : any = document.getElementById('next');
 
 nextEle.onclick = () => {
-    var x = storeData();
-    
-    if( x === true){
+    const flag = storeData();
+
+    if( flag === true){
         window.location.href = "./AboutSoft.html";
     }
 

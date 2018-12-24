@@ -1,9 +1,9 @@
 import {SystemInfo} from '../subprocesses/SystemInfo'
 
-var checkcond = () =>{
-    let cond : boolean = (<HTMLInputElement>document.getElementById('termscheck')).checked;
-    let button : any = (<HTMLInputElement>document.getElementById('finish'));
-    if(cond == true){
+const checkcond = () =>{
+    const cond : boolean = (<HTMLInputElement>document.getElementById('termscheck')).checked;
+    const button : any = (<HTMLInputElement>document.getElementById('finish'));
+    if(cond === true){
         button.disabled = false;
     }
     else{
@@ -11,17 +11,17 @@ var checkcond = () =>{
     }
 } 
 
-var saveDetails = () => {
-    var sd : any = new SystemInfo();
+const saveDetails = () => {
+    const sd : any = new SystemInfo();
     sd.extractDetails();
 }
 
-let finishEle : any = document.getElementById('finish');
+const finishEle : any = document.getElementById('finish');
 finishEle.onclick = () =>{
     saveDetails()
 }
 
-let check : any = document.getElementById('termscheck');
+const check : any = document.getElementById('termscheck');
 check.onclick = () => {
     checkcond()
 }

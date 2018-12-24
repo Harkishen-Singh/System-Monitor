@@ -1,16 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbService_1 = require("../dbService");
-const electron = require('electron');
 function storeData() {
-    let username = document.getElementById('username').value;
-    let email = document.getElementById('email').value;
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
     let bool = false;
-    let obj = {
+    const obj = {
         Username: username,
         EmailId: email
     };
-    if (username == "" || email == "") {
+    if (username === "" || email === "") {
         bool = false;
         return bool;
     }
@@ -21,10 +20,10 @@ function storeData() {
         return bool;
     }
 }
-let nextEle = document.getElementById('next');
+const nextEle = document.getElementById('next');
 nextEle.onclick = () => {
-    var x = storeData();
-    if (x === true) {
+    const flag = storeData();
+    if (flag === true) {
         window.location.href = "./AboutSoft.html";
     }
     else {

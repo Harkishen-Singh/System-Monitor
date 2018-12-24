@@ -1,25 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const SystemInfo_1 = require("../subprocesses/SystemInfo");
-var checkcond = () => {
-    let cond = document.getElementById('termscheck').checked;
-    let button = document.getElementById('finish');
-    if (cond == true) {
+const checkcond = () => {
+    const cond = document.getElementById('termscheck').checked;
+    const button = document.getElementById('finish');
+    if (cond === true) {
         button.disabled = false;
     }
     else {
         button.disabled = true;
     }
 };
-var saveDetails = () => {
-    var sd = new SystemInfo_1.SystemInfo();
+const saveDetails = () => {
+    const sd = new SystemInfo_1.SystemInfo();
     sd.extractDetails();
 };
-let finishEle = document.getElementById('finish');
+const finishEle = document.getElementById('finish');
 finishEle.onclick = () => {
     saveDetails();
 };
-let check = document.getElementById('termscheck');
+const check = document.getElementById('termscheck');
 check.onclick = () => {
     checkcond();
 };
