@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const SystemInfo_1 = require("../subprocesses/SystemInfo");
 const checkcond = () => {
     const cond = document.getElementById("termscheck");
-    const check_cond = cond.checked;
+    const checkCondition = cond.checked;
     const button = document.getElementById("finish");
-    if (check_cond === true) {
+    if (checkCondition === true) {
         button.disabled = false;
     }
     else {
