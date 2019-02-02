@@ -38,6 +38,6 @@
     "typescript": "3.2.4"
   },
   "dependencies": {
-    "systeminformation": "^3.52.2"
+    "systeminformation": "^4.0.0"
   }
 }
