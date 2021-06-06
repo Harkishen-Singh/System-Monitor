@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^10.12.18",
+    "@types/node": "^14.0.0",
     "@types/node-json-db": "0.0.1",
     "@types/shelljs": "^0.8.1",
     "@types/systeminformation": "^3.23.1",
